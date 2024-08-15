@@ -1,0 +1,32 @@
+{
+  "name": "kangaroo-post-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./api-admin/app.js",
+    "ndb": "ndb ./api-admin/app.js",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "moment": "^2.30.1",
+    "mongoose": "^8.5.2",
+    "mongoose-sequence": "^6.0.1",
+    "mongoose-unique-validator": "^5.0.1",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.4",
+    "winston": "^3.14.1",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
