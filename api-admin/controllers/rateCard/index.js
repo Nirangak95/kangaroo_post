@@ -1,74 +1,79 @@
 const {
-  getRestaurant,
-  createRestaurant,
-} = require("../../../common/validators/restaurantValidator");
-const RestaurantModel = require("../../../common/models/rateCard");
-const sharp = require("sharp");
+  getRateCard,
+  createRateCard,
+  updateRateCard
+} = require("../../../common/validators/rateCardValidator");
+const RateCardModel = require("../../../common/models/rateCard");
 
 let { successResponse, errorResponse } = require("../../../common/helpers");
 
 const create = async (req, res, next) => {
   try {
-    await createRestaurant.validateAsync(req.body);
+    const body = await createRateCard.validateAsync(req.body);
 
-    if (!req.file) {
-      return res
-        .status(400)
-        .json(errorResponse({ message: "No file uploaded" }));
-    }
+    const savedRateCard = await RateCardModel(body).save();
 
-    const logoPath = `uploads/original/${req.file.filename}`;
-
-    const outputFilePath = `uploads/resized/${req.file.filename}`;
-
-    // Resize the image
-    await sharp(logoPath)
-      // .resize(800, 600, { fit: 'cover' })
-      .jpeg({ quality: 80 })
-      .toFile(outputFilePath);
-
-    Object.assign(req.body, {
-      logo: {
-        originalPath: logoPath,
-        resizedPath: outputFilePath,
-      },
-    });
-
-    const savedRestaurant = await RestaurantModel(req.body).save();
-
-    res.status(201).json(successResponse({ data: savedRestaurant }));
+    res.status(201).json(successResponse({ data: savedRateCard }));
   } catch (error) {
-    console.log("Create Restaurant Error", error);
+    console.log("Create Rate Card Error", error);
     next(error);
   }
 };
 
 const get = async (req, res, next) => {
   try {
-    await getRestaurant.validateAsync(req.params);
+    await getRateCard.validateAsync(req.params);
 
-    const restaurant = await RestaurantModel.findById(req.params.id);
+    const rateCard = await RateCardModel.findById(req.params.id);
 
-    if (!restaurant) {
-      return res.status(404).json(errorResponse("Restaurant not found"));
+    if (!rateCard) {
+      return res
+        .status(404)
+        .json(errorResponse({ message: "Rate card not found" }));
     }
 
-    res.status(200).json(successResponse({ data: restaurant }));
+    res.status(200).json(successResponse({ data: rateCard }));
   } catch (error) {
-    console.log("Get restaurant error", error);
+    console.log("Get rate card error", error);
     next(error);
   }
 };
 
 const getAll = async (req, res, next) => {
   try {
-    const restaurants = await RestaurantModel.find({});
+    const rateCards = await RateCardModel.find({});
 
-    res.status(200).json(successResponse({ data: restaurants }));
+    res.status(200).json(successResponse({ data: rateCards }));
   } catch (error) {
-    console.log("Get all restaurants error", error);
+    console.log("Get all rate cards error", error);
     next(error);
   }
 };
 
-module.exports = { create, get, getAll };
+const update = async (req, res, next) => {
+  try {
+
+    const input = await updateRateCard.validateAsync(Object.assign(req.body, { ...req.params }));
+
+    const rateCard = await RateCardModel.findById(input.id);
+
+    if (!rateCard) {
+      return res
+        .status(404)
+        .json(errorResponse({ message: "Rate card not found" }));
+    }
+
+    const updatedRateCard = await RateCardModel.findByIdAndUpdate(
+      input.id,
+      input,
+      { new: true },
+    );
+
+    res.status(200).json(successResponse({ data: updatedRateCard }));
+  } catch (error) {
+    console.log("Rate card update error", error);
+    next(error);
+  }
+};
+
+module.exports = { create, get, getAll, update };

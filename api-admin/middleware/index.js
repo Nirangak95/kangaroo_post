@@ -11,10 +11,11 @@ const notFoundHandler = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
+  let statusCode = err.statusCode || 500;
   let errorCode = err.errorCode || null;
 
-  if (err?.name == "ValidationError") {
+  if (err?.name == "ValidationError" || err?.code == E11000) {
+    statusCode = 400;
     errorCode = errorCodes.validationError;
   }
 

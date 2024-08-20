@@ -1,26 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
-const { getAll, get, create } = require("../../controllers/rateCard/index");
+const { getAll, get, create, update } = require("../../controllers/rateCard/index");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/original/"); // Directory to save uploaded files
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
-  },
-});
+router.post("/create", create);
 
-const upload = multer({ storage });
 
-router.post("/create", upload.single("file"), create);
-
-//Get restaurant by Id
+//Get rateCard by Id
 router.get("/:id", get);
 
-//Get all restaurants
+//Get all rateCards
 router.get("/", getAll);
+
+router.put("/:id", update);
+
+
 
 module.exports = router;
