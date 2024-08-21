@@ -7,6 +7,29 @@ const connection = mongoose.createConnection(config.mongoDatabase);
 
 const autoIncrement = autoIncrementFactory(connection);
 
+//For avoiding getting deleted result
+const softDeletePlugin = (schema) => {
+  schema.pre("find", function () {
+    this.where({ isDeleted: false });
+  });
+
+  schema.pre("findOne", function () {
+    this.where({ isDeleted: false });
+  });
+
+  schema.pre("findOneAndUpdate", function () {
+    this.where({ isDeleted: false });
+  });
+
+  schema.pre("countDocuments", function () {
+    this.where({ isDeleted: false });
+  });
+
+  schema.pre("aggregate", function () {
+    this.pipeline().unshift({ $match: { isDeleted: false } });
+  });
+};
+
 function setModel(schema, modelName) {
   let model;
   if (mongoose.models.model) {
@@ -23,6 +46,8 @@ function setPlugins(schema, modelName) {
   schema.plugin(uniqueValidator, {
     message: "Error, expected {PATH} to be unique.",
   });
+
+  schema.plugin(softDeletePlugin);
 }
 
 function createSchema(schemaDefinition, modelName) {

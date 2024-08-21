@@ -13,8 +13,12 @@ const createRateCard = joi.object().keys({
       }),
     )
     .required(),
-  status: joi.string().trim().allow(Status.ENABLED, Status.DISABLED).only().required(),
-
+  status: joi
+    .string()
+    .trim()
+    .allow(Status.ENABLED, Status.DISABLED)
+    .only()
+    .required(),
 });
 
 const getRateCard = joi.object().keys({

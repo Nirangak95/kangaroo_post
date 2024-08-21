@@ -1,9 +1,10 @@
 const {
   getRateCard,
   createRateCard,
-  updateRateCard
+  updateRateCard,
 } = require("../../../common/validators/rateCardValidator");
 const RateCardModel = require("../../../common/models/rateCard");
+const { notFound } = require("../../../common/errorCodes");
 
 let { successResponse, errorResponse } = require("../../../common/helpers");
 
@@ -27,9 +28,12 @@ const get = async (req, res, next) => {
     const rateCard = await RateCardModel.findById(req.params.id);
 
     if (!rateCard) {
-      return res
-        .status(404)
-        .json(errorResponse({ message: "Rate card not found" }));
+      return res.status(404).json(
+        errorResponse({
+          message: "Rate card not found",
+          errorCode: notFound,
+        }),
+      );
     }
 
     res.status(200).json(successResponse({ data: rateCard }));
@@ -52,15 +56,19 @@ const getAll = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-
-    const input = await updateRateCard.validateAsync(Object.assign(req.body, { ...req.params }));
+    const input = await updateRateCard.validateAsync(
+      Object.assign(req.body, { ...req.params }),
+    );
 
     const rateCard = await RateCardModel.findById(input.id);
 
     if (!rateCard) {
-      return res
-        .status(404)
-        .json(errorResponse({ message: "Rate card not found" }));
+      return res.status(404).json(
+        errorResponse({
+          message: "Rate card not found",
+          errorCode: notFound,
+        }),
+      );
     }
 
     const updatedRateCard = await RateCardModel.findByIdAndUpdate(
@@ -76,4 +84,31 @@ const update = async (req, res, next) => {
   }
 };
 
-module.exports = { create, get, getAll, update };
+const deleteRateCard = async (req, res, next) => {
+  try {
+    await getRateCard.validateAsync(req.params);
+
+    const rateCard = await RateCardModel.findById(req.params.id);
+
+    if (!rateCard) {
+      return res.status(404).json(
+        errorResponse({
+          message: "Rate card not found",
+          errorCode: notFound,
+        }),
+      );
+    }
+
+    await RateCardModel.findByIdAndUpdate(
+      req.params.id,
+      { isDeleted: true },
+    );
+
+    res.status(200).json(successResponse({ message: "Successfully deleted" }));
+  } catch (error) {
+    console.log("Rate card delete error", error);
+    next(error);
+  }
+};
+
+module.exports = { create, get, getAll, update, deleteRateCard };

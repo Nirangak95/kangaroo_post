@@ -5,19 +5,19 @@ const {
   get,
   create,
   update,
-  deleteRateCard
-} = require("../../controllers/rateCard/index");
+  deletePackage
+} = require("../../controllers/package/index");
 
 router.post("/create", create);
 
-//Get rateCard by Id
+//Get package by Id
 router.get("/:id", get);
 
-//Get all rateCards
+//Get all packages
 router.get("/", getAll);
 
 router.put("/:id", update);
 
-router.delete("/:id", deleteRateCard);
+router.delete("/:id", deletePackage);
 
 module.exports = router;

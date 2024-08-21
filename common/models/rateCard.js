@@ -1,6 +1,6 @@
 const modelName = "rateCard";
 const index = require("./index");
-const { Status } = require("../constants")
+const { Status } = require("../constants");
 
 const schema = {
   _id: { type: Number, ref: modelName },
