@@ -5,7 +5,7 @@ const {
   get,
   create,
   update,
-  deletePackage
+  deletePackage,
 } = require("../../controllers/package/index");
 
 router.post("/create", create);

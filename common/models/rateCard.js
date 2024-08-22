@@ -19,12 +19,24 @@ const schema = {
     required: true,
   },
 
+  maxDimensions: {
+    type: {
+      _id: false,
+      length: { type: Number, default: null },
+      width: { type: Number, default: null },
+      height: { type: Number, default: null },
+    },
+    required: true,
+  },
+
   status: {
     type: String,
     enum: [Status.ENABLED, Status.DISABLED],
     default: Status.ENABLED,
   },
   isDeleted: { type: Boolean, default: false },
+  mapIconUrl: { type: String, default: null },
+  imageUrl: { type: String, default: null },
 };
 
 const schemaTemplate = index.createSchema(schema, modelName);

@@ -17,6 +17,7 @@ module.exports = async (app) => {
 async function initMongoDB() {
   try {
     await mongoose.connect(config.mongoDatabase, {});
+
     // await mongoose.connect("222", {});
 
     console.log("MongoDB connected");

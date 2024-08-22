@@ -99,10 +99,7 @@ const deletePackage = async (req, res, next) => {
       );
     }
 
-    await PackageModel.findByIdAndUpdate(
-      req.params.id,
-      { isDeleted: true },
-    );
+    await PackageModel.findByIdAndUpdate(req.params.id, { isDeleted: true });
 
     res.status(200).json(successResponse({ message: "Successfully deleted" }));
   } catch (error) {

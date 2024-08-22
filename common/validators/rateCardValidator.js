@@ -8,8 +8,8 @@ const createRateCard = joi.object().keys({
     .items(
       joi.object({
         modelName: joi.string().required().trim(),
-        maxWeight: joi.number(),
-        minWeight: joi.number(),
+        maxWeight: joi.number().allow(null),
+        minWeight: joi.number().allow(null),
       }),
     )
     .required(),
@@ -19,6 +19,16 @@ const createRateCard = joi.object().keys({
     .allow(Status.ENABLED, Status.DISABLED)
     .only()
     .required(),
+  maxDimensions: joi
+    .object({
+      length: joi.number(),
+      width: joi.number(),
+      height: joi.number(),
+    })
+    .required(),
+
+  mapIconUrl: joi.string().default(null).allow(null),
+  imageUrl: joi.string().default(null).allow(null),
 });
 
 const getRateCard = joi.object().keys({

@@ -5,10 +5,16 @@ const {
   get,
   create,
   update,
-  deleteRateCard
+  deleteRateCard,
 } = require("../../controllers/rateCard/index");
 
-router.post("/create", create);
+const upload = require("../../../common/utils/multerConfigs");
+
+router.post(
+  "/create",
+  upload.fields([{ name: "mapIconUrl" }, { name: "imageUrl" }]),
+  create,
+);
 
 //Get rateCard by Id
 router.get("/:id", get);
