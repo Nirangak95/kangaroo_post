@@ -1,8 +1,7 @@
 const modelName = "user";
 const index = require("./index");
-const bcrypt = require("bcrypt");
+const { hashPassword } = require("../utils/bcrypt");
 
-const SALT_WORK_FACTOR = 10;
 const { Status, UserRoles } = require("../constants");
 
 const schema = {
@@ -27,30 +26,28 @@ const schema = {
   isDeleted: { type: Boolean, default: false },
 };
 
+const schemaTemplate = index.createSchema(schema, modelName);
+
 //Hash password before saving
-schema.pre("save", function (next) {
-  const restaurant = this;
-  if (!restaurant.isModified("password")) return next();
+schemaTemplate.pre("save", async function (next) {
+  const user = this;
+  // If the password is not modified, skip hashing
+  if (!user.isModified("password")) return next();
 
-  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-    if (err) return next(err);
-
-    bcrypt.hash(restaurant.password, salt, (err, hash) => {
-      if (err) return next(err);
-
-      restaurant.password = hash;
-      next();
-    });
-  });
+  try {
+    user.password = await hashPassword(user.password);
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 // Verify password
-schema.methods.comparePassword = function (restaurantPassword, cb) {
-  bcrypt.compare(restaurantPassword, this.password, (err, isMatch) => {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
-};
+// schemaTemplate.methods.comparePassword = function (userPassword, cb) {
+//   bcrypt.compare(userPassword, this.password, (err, isMatch) => {
+//     if (err) return cb(err);
+//     cb(null, isMatch);
+//   });
+// };
 
-const schemaTemplate = index.createSchema(schema, modelName);
 module.exports = index.setModel(schemaTemplate, modelName);

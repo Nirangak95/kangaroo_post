@@ -60,7 +60,6 @@ function createSchema(schemaDefinition, modelName) {
 }
 
 module.exports = {
-  autoIncrement,
   setModel,
   createSchema,
 };

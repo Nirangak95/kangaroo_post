@@ -85,9 +85,13 @@ const update = async (req, res, next) => {
       Object.assign(req.body, { ...req.params }),
     );
 
-    const rateCard = await RateCardModel.findById(input.id);
+    const updatedRateCard = await RateCardModel.findByIdAndUpdate(
+      input.id,
+      input,
+      { new: true },
+    );
 
-    if (!rateCard) {
+    if (!updatedRateCard) {
       return res.status(404).json(
         errorResponse({
           message: "Rate card not found",
@@ -95,12 +99,6 @@ const update = async (req, res, next) => {
         }),
       );
     }
-
-    const updatedRateCard = await RateCardModel.findByIdAndUpdate(
-      input.id,
-      input,
-      { new: true },
-    );
 
     res.status(200).json(successResponse({ data: updatedRateCard }));
   } catch (error) {
@@ -113,9 +111,12 @@ const deleteRateCard = async (req, res, next) => {
   try {
     await getRateCard.validateAsync(req.params);
 
-    const rateCard = await RateCardModel.findById(req.params.id);
+    const deletedRateCard = await RateCardModel.findByIdAndUpdate(
+      req.params.id,
+      { isDeleted: true },
+    );
 
-    if (!rateCard) {
+    if (!deletedRateCard) {
       return res.status(404).json(
         errorResponse({
           message: "Rate card not found",
@@ -123,8 +124,6 @@ const deleteRateCard = async (req, res, next) => {
         }),
       );
     }
-
-    await RateCardModel.findByIdAndUpdate(req.params.id, { isDeleted: true });
 
     res.status(200).json(successResponse({ message: "Successfully deleted" }));
   } catch (error) {

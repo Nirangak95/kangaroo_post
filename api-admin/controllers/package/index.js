@@ -60,9 +60,13 @@ const update = async (req, res, next) => {
       Object.assign(req.body, { ...req.params }),
     );
 
-    const package = await PackageModel.findById(input.id);
+    const updatedPackage = await PackageModel.findByIdAndUpdate(
+      input.id,
+      input,
+      { new: true },
+    );
 
-    if (!package) {
+    if (!updatedPackage) {
       return res.status(404).json(
         errorResponse({
           message: "Package not found",
@@ -70,12 +74,6 @@ const update = async (req, res, next) => {
         }),
       );
     }
-
-    const updatedPackage = await PackageModel.findByIdAndUpdate(
-      input.id,
-      input,
-      { new: true },
-    );
 
     res.status(200).json(successResponse({ data: updatedPackage }));
   } catch (error) {
@@ -88,9 +86,11 @@ const deletePackage = async (req, res, next) => {
   try {
     await getPackage.validateAsync(req.params);
 
-    const package = await PackageModel.findById(req.params.id);
+    const deletedPackage = await PackageModel.findByIdAndUpdate(req.params.id, {
+      isDeleted: true,
+    });
 
-    if (!package) {
+    if (!deletedPackage) {
       return res.status(404).json(
         errorResponse({
           message: "Package not found",
@@ -98,8 +98,6 @@ const deletePackage = async (req, res, next) => {
         }),
       );
     }
-
-    await PackageModel.findByIdAndUpdate(req.params.id, { isDeleted: true });
 
     res.status(200).json(successResponse({ message: "Successfully deleted" }));
   } catch (error) {

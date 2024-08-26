@@ -19,4 +19,14 @@ const getUser = joi.object().keys({
   id: joi.number().required(),
 });
 
-module.exports = { createUser, getUser };
+const updateUser = joi.object().keys({
+  id: joi.number().required(),
+  username: joi.string().min(3),
+  password: joi.string().min(3),
+  role: joi.string().allow(UserRoles.ADMIN).only(),
+  email: joi.string(),
+  contactNumber: joi.string(),
+  status: joi.string().trim().allow(Status.ENABLED, Status.DISABLED).only(),
+});
+
+module.exports = { createUser, getUser, updateUser };
