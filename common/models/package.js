@@ -6,11 +6,11 @@ const schema = {
   _id: { type: Number, ref: modelName },
 
   /** properties */
-  type: { type: String, required: true, unique: true },
+  name: { type: String, required: true, unique: true },
   allowedWeight: {
     _id: false,
     type: {
-      min: { type: Number, default: null },
+      min: { type: Number },
       max: { type: Number, default: null },
     },
   },

@@ -2,7 +2,7 @@ const joi = require("joi");
 const { Status } = require("../constants");
 
 const createPackage = joi.object().keys({
-  type: joi.string().trim().required(),
+  name: joi.string().trim().required(),
   vehicularTypes: joi.array().items(joi.string().min(2)).required().min(1),
   status: joi
     .string()
@@ -12,7 +12,7 @@ const createPackage = joi.object().keys({
     .required(),
   allowedWeight: joi
     .object({
-      min: joi.number().default(null),
+      min: joi.number(),
       max: joi.number().default(null),
     })
     .required(),

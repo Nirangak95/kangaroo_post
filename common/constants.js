@@ -3,4 +3,8 @@ const Status = {
   DISABLED: "disabled",
 };
 
-module.exports = { Status };
+const UserRoles = {
+  ADMIN: "admin",
+};
+
+module.exports = { Status, UserRoles };
