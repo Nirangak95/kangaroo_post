@@ -8,7 +8,7 @@ const schema = {
   _id: { type: Number, ref: modelName },
 
   /** properties */
-  username: { type: String, required: true, unique: true },
+  userName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true, enum: [UserRoles.ADMIN] },
   firebaseID: { type: String, default: null },

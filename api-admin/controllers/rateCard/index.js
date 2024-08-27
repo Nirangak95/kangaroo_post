@@ -50,7 +50,7 @@ const get = async (req, res, next) => {
   try {
     await getRateCard.validateAsync(req.params);
 
-    const rateCard = await RateCardModel.findById(req.params.id);
+    const rateCard = await RateCardModel.findById(req.params.id).lean();
 
     if (!rateCard) {
       return res.status(404).json(
@@ -70,7 +70,7 @@ const get = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const rateCards = await RateCardModel.find({});
+    const rateCards = await RateCardModel.find({}).lean();
 
     res.status(200).json(successResponse({ data: rateCards }));
   } catch (error) {
@@ -89,7 +89,7 @@ const update = async (req, res, next) => {
       input.id,
       input,
       { new: true },
-    );
+    ).lean();
 
     if (!updatedRateCard) {
       return res.status(404).json(
@@ -114,7 +114,7 @@ const deleteRateCard = async (req, res, next) => {
     const deletedRateCard = await RateCardModel.findByIdAndUpdate(
       req.params.id,
       { isDeleted: true },
-    );
+    ).lean();
 
     if (!deletedRateCard) {
       return res.status(404).json(

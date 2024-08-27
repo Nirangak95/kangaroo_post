@@ -2,12 +2,19 @@ const {
   getUser,
   createUser,
   updateUser,
+  authenticateUser
 } = require("../../../common/validators/userValidator");
 const UserModel = require("../../../common/models/user");
-const { notFound } = require("../../../common/errorCodes");
-const { hashPassword } = require("../../../common/utils/bcrypt");
+const { notFound, authenticationFail } = require("../../../common/errorCodes");
+const { hashPassword, comparePassword } = require("../../../common/utils/bcrypt");
+const config = require("../../../common/config")
+
+const jwt = require("jsonwebtoken");
 
 let { successResponse, errorResponse } = require("../../../common/helpers");
+
+const properties =
+  "userName role email contactNumber status isLogged createdAt isDeleted";
 
 const create = async (req, res, next) => {
   try {
@@ -26,7 +33,7 @@ const get = async (req, res, next) => {
   try {
     await getUser.validateAsync(req.params);
 
-    const user = await UserModel.findById(req.params.id).select(userFields);
+    const user = await UserModel.findById(req.params.id).select(properties).lean();
 
     if (!user) {
       return res.status(404).json(
@@ -46,7 +53,7 @@ const get = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const users = await UserModel.find({}).select(userFields);
+    const users = await UserModel.find({}).select(properties).lean();
 
     res.status(200).json(successResponse({ data: users }));
   } catch (error) {
@@ -68,7 +75,7 @@ const update = async (req, res, next) => {
 
     const updatedUser = await UserModel.findByIdAndUpdate(input.id, input, {
       new: true,
-    });
+    }).lean();
 
     if (!updatedUser) {
       return res.status(404).json(
@@ -92,7 +99,7 @@ const deleteUser = async (req, res, next) => {
 
     const deletedUser = await UserModel.findByIdAndUpdate(req.params.id, {
       isDeleted: true,
-    });
+    }).lean();
 
     if (!deletedUser) {
       return res.status(404).json(
@@ -110,7 +117,45 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const userFields =
-  "username role email contactNumber status isLogged createdAt isDeleted";
+const authenticate = async (req, res, next) => {
+  try {
 
-module.exports = { create, get, getAll, update, deleteUser };
+    await authenticateUser.validateAsync(req.body);
+
+    const user = await UserModel.findOne({
+      userName: req.body.userName,
+    }).select(`password _id`).lean();
+
+    if (!user) {
+      return res.status(404).json(
+        errorResponse({
+          message: "User not found",
+          errorCode: authenticationFail,
+        }),
+      );
+    }
+
+    //Validate Password
+    const isMatch = await comparePassword(req.body.password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json(
+        errorResponse({
+          message: "Invalid password",
+          errorCode: notFound,
+        }),
+      );
+    }
+    const token = jwt.sign({ userId: user._id, password: user.password }, config.security.SECRET_KEY,
+      // { expiresIn: '1h' }
+    );
+
+    res.status(200).json(successResponse({ message: "Ok", data: { token } }));
+  } catch (error) {
+    console.log("Error authenticate user", error);
+    next(error);
+  }
+};
+
+
+module.exports = { create, get, getAll, update, deleteUser, authenticate };

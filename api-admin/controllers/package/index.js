@@ -25,7 +25,7 @@ const get = async (req, res, next) => {
   try {
     await getPackage.validateAsync(req.params);
 
-    const package = await PackageModel.findById(req.params.id);
+    const package = await PackageModel.findById(req.params.id).lean();
 
     if (!package) {
       return res.status(404).json(
@@ -45,7 +45,7 @@ const get = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const packages = await PackageModel.find({});
+    const packages = await PackageModel.find({}).lean();
 
     res.status(200).json(successResponse({ data: packages }));
   } catch (error) {
@@ -64,7 +64,7 @@ const update = async (req, res, next) => {
       input.id,
       input,
       { new: true },
-    );
+    ).lean();
 
     if (!updatedPackage) {
       return res.status(404).json(
@@ -88,7 +88,7 @@ const deletePackage = async (req, res, next) => {
 
     const deletedPackage = await PackageModel.findByIdAndUpdate(req.params.id, {
       isDeleted: true,
-    });
+    }).lean();
 
     if (!deletedPackage) {
       return res.status(404).json(

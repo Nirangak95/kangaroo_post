@@ -17,6 +17,14 @@ switch (process.env.NODE_ENV) {
         rateCardMapIcons: "rateCards/mapIcons/",
         rateCardImage: "rateCards/images/",
       },
+
+      security: {
+        SALT_WORKER: 10,
+        SECRET_KEY: "#*J(<21>9037&uop",
+
+        //Not Applied
+        EXPIRES_IN: "1h"
+      }
     };
     break;
 }

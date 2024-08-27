@@ -2,7 +2,7 @@ const joi = require("joi");
 const { Status, UserRoles } = require("../constants");
 
 const createUser = joi.object().keys({
-  username: joi.string().required().min(3),
+  userName: joi.string().required().min(3),
   password: joi.string().required().min(3),
   role: joi.string().allow(UserRoles.ADMIN).only().required(),
   email: joi.string(),
@@ -21,7 +21,7 @@ const getUser = joi.object().keys({
 
 const updateUser = joi.object().keys({
   id: joi.number().required(),
-  username: joi.string().min(3),
+  userName: joi.string().min(3),
   password: joi.string().min(3),
   role: joi.string().allow(UserRoles.ADMIN).only(),
   email: joi.string(),
@@ -29,4 +29,10 @@ const updateUser = joi.object().keys({
   status: joi.string().trim().allow(Status.ENABLED, Status.DISABLED).only(),
 });
 
-module.exports = { createUser, getUser, updateUser };
+const authenticateUser = joi.object().keys({
+  userName: joi.string().required(),
+  password: joi.string().required(),
+
+});
+
+module.exports = { createUser, getUser, updateUser, authenticateUser };
