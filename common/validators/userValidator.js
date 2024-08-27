@@ -32,7 +32,6 @@ const updateUser = joi.object().keys({
 const authenticateUser = joi.object().keys({
   userName: joi.string().required(),
   password: joi.string().required(),
-
 });
 
 module.exports = { createUser, getUser, updateUser, authenticateUser };

@@ -2,12 +2,15 @@ const {
   getUser,
   createUser,
   updateUser,
-  authenticateUser
+  authenticateUser,
 } = require("../../../common/validators/userValidator");
 const UserModel = require("../../../common/models/user");
 const { notFound, authenticationFail } = require("../../../common/errorCodes");
-const { hashPassword, comparePassword } = require("../../../common/utils/bcrypt");
-const config = require("../../../common/config")
+const {
+  hashPassword,
+  comparePassword,
+} = require("../../../common/utils/bcrypt");
+const config = require("../../../common/config");
 
 const jwt = require("jsonwebtoken");
 
@@ -33,7 +36,9 @@ const get = async (req, res, next) => {
   try {
     await getUser.validateAsync(req.params);
 
-    const user = await UserModel.findById(req.params.id).select(properties).lean();
+    const user = await UserModel.findById(req.params.id)
+      .select(properties)
+      .lean();
 
     if (!user) {
       return res.status(404).json(
@@ -119,12 +124,13 @@ const deleteUser = async (req, res, next) => {
 
 const authenticate = async (req, res, next) => {
   try {
-
     await authenticateUser.validateAsync(req.body);
 
     const user = await UserModel.findOne({
       userName: req.body.userName,
-    }).select(`password _id`).lean();
+    })
+      .select(`password _id`)
+      .lean();
 
     if (!user) {
       return res.status(404).json(
@@ -146,8 +152,10 @@ const authenticate = async (req, res, next) => {
         }),
       );
     }
-    const token = jwt.sign({ userId: user._id, password: user.password }, config.security.SECRET_KEY,
-      // { expiresIn: '1h' }
+    const token = jwt.sign(
+      { userId: user._id, password: user.password },
+      config.security.SECRET_KEY,
+      // { expiresIn: '30s' }
     );
 
     res.status(200).json(successResponse({ message: "Ok", data: { token } }));
@@ -156,6 +164,5 @@ const authenticate = async (req, res, next) => {
     next(error);
   }
 };
-
 
 module.exports = { create, get, getAll, update, deleteUser, authenticate };

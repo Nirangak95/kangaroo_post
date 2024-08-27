@@ -1,32 +1,22 @@
-let config = {};
+const config = {
+  mongoDatabase: process.env.MONGO_DB,
+  logsPath: process.env.LOGS_PATH,
+  images: {
+    originalPath: process.env.ORIGINAL_PATH,
+    resizedPath: process.env.RESIZED_PATH,
 
-switch (process.env.NODE_ENV) {
-  case "dev":
-    config = {};
-    break;
-  //For local PC
-  default:
-    config = {
-      mongoDatabase: "mongodb://localhost:27017/post",
-      logsPath: "../opt/logs",
-      images: {
-        originalPath: "D:/Kangaroo/Posts/opt/uploads/original/",
-        resizedPath: "D:/Kangaroo/Posts/opt/uploads/resized/",
+    //RateCard
+    rateCardMapIcons: process.env.RATE_CARD_MAP_ICONS,
+    rateCardImage: process.env.RATE_CARD_IMAGES,
+  },
 
-        //RateCard
-        rateCardMapIcons: "rateCards/mapIcons/",
-        rateCardImage: "rateCards/images/",
-      },
+  security: {
+    SALT_WORKER: process.env.SALT_WORKER,
+    SECRET_KEY: process.env.SECRET_KEY,
 
-      security: {
-        SALT_WORKER: 10,
-        SECRET_KEY: "#*J(<21>9037&uop",
-
-        //Not Applied
-        EXPIRES_IN: "1h"
-      }
-    };
-    break;
-}
+    //Not Applied
+    EXPIRES_IN: process.env.EXPIRES_IN,
+  },
+};
 
 module.exports = config;

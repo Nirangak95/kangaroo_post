@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
 
 //Enable Cors
 const corsOptions = {
@@ -15,13 +16,16 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Middle wares
+const middlewares = require("./middleware/index");
+
 //Validate Routes --------
+app.use("/api-admin/", middlewares.tokenValidation);
 
 //Routes
 require("./routes/index")(app);
 
 //Common Middlewares
-const middlewares = require("./middleware/index");
 app.use(middlewares.notFoundHandler);
 app.use(middlewares.errorHandler);
 
