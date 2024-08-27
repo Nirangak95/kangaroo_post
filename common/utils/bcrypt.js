@@ -17,7 +17,7 @@ const comparePassword = async (inputPass, encryptedPass) => {
     const isMatch = await bcrypt.compare(inputPass, encryptedPass);
     return isMatch;
   } catch (err) {
-    throw err;
+    throw new Error(err);
   }
 };
 

@@ -124,10 +124,10 @@ const deleteUser = async (req, res, next) => {
 
 const authenticate = async (req, res, next) => {
   try {
-    await authenticateUser.validateAsync(req.body);
+    const { userName, password } = await authenticateUser.validateAsync(req.body);
 
     const user = await UserModel.findOne({
-      userName: req.body.userName,
+      userName
     })
       .select(`password _id`)
       .lean();
@@ -142,7 +142,7 @@ const authenticate = async (req, res, next) => {
     }
 
     //Validate Password
-    const isMatch = await comparePassword(req.body.password, user.password);
+    const isMatch = await comparePassword(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json(

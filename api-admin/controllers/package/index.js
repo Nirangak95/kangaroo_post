@@ -25,9 +25,9 @@ const get = async (req, res, next) => {
   try {
     await getPackage.validateAsync(req.params);
 
-    const package = await PackageModel.findById(req.params.id).lean();
+    const packageDetails = await PackageModel.findById(req.params.id).lean();
 
-    if (!package) {
+    if (!packageDetails) {
       return res.status(404).json(
         errorResponse({
           message: "Package not found",
@@ -36,7 +36,7 @@ const get = async (req, res, next) => {
       );
     }
 
-    res.status(200).json(successResponse({ data: package }));
+    res.status(200).json(successResponse({ data: packageDetails }));
   } catch (error) {
     console.log("Get package error", error);
     next(error);

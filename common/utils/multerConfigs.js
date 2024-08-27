@@ -30,6 +30,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 // Create Multer instance with storage and file filter
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+//allow to max file size 25MB - It will compress
+const upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fieldSize: 25 * 1024 * 1024 } });
 
 module.exports = upload;
