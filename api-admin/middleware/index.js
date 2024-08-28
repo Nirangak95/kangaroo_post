@@ -19,7 +19,7 @@ const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
   let errorCode = err.errorCode || null;
 
-  if (err?.name == "ValidationError" || err?.code == "E11000") {
+  if (err?.name == "ValidationError" || err?.code == 11000) {
     statusCode = 400;
     errorCode = errorCodes.validationError;
   }
@@ -54,7 +54,7 @@ const tokenValidation = (req, res, next) => {
       }),
     );
   } else {
-    jwt.verify(token, config.security.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, config.SECURITY.SECRET_KEY, (err, decoded) => {
       if (err) {
         if (err.name === "JsonWebTokenError") {
           return res.status(401).json(

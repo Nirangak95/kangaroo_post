@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const config = require("../config");
-const SALT_WORKER = config.security.SALT_WORKER;
+const SALT_WORKER = config.SECURITY.SALT_WORKER;
 
 const hashPassword = async (password) => {
   try {

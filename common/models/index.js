@@ -3,7 +3,7 @@ const autoIncrementFactory = require("mongoose-sequence");
 const uniqueValidator = require("mongoose-unique-validator");
 const config = require("../../common/config");
 
-const connection = mongoose.createConnection(config.mongoDatabase);
+const connection = mongoose.createConnection(config.MONGO_DB);
 
 const autoIncrement = autoIncrementFactory(connection);
 

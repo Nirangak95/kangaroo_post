@@ -23,16 +23,16 @@ const create = async (req, res, next) => {
 
     //Map Icon Resize & Save
     if (inputFiles.mapIconUrl) {
-      const originalPath = `${config.images.originalPath}${inputFiles.mapIconUrl[0].filename}`;
-      const resizedPath = `${config.images.resizedPath}${config.images.rateCardMapIcons}${inputFiles.mapIconUrl[0].filename}`;
+      const originalPath = `${config.IMAGES.ORIGINAL_PATH}${inputFiles.mapIconUrl[0].filename}`;
+      const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}${inputFiles.mapIconUrl[0].filename}`;
       await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
       validatedInput.mapIconUrl = resizedPath;
     }
 
     //Rate Card Resize & Save
     if (inputFiles.imageUrl) {
-      const originalPath = `${config.images.originalPath}${inputFiles.imageUrl[0].filename}`;
-      const resizedPath = `${config.images.resizedPath}${config.images.rateCardImage}${inputFiles.imageUrl[0].filename}`;
+      const originalPath = `${config.IMAGES.ORIGINAL_PATH}${inputFiles.imageUrl[0].filename}`;
+      const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}${inputFiles.imageUrl[0].filename}`;
       await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
       validatedInput.imageUrl = resizedPath;
     }

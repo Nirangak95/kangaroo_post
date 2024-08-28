@@ -80,7 +80,9 @@ const update = async (req, res, next) => {
 
     const updatedUser = await UserModel.findByIdAndUpdate(input.id, input, {
       new: true,
-    }).lean();
+    })
+      .select(properties)
+      .lean();
 
     if (!updatedUser) {
       return res.status(404).json(
@@ -104,7 +106,9 @@ const deleteUser = async (req, res, next) => {
 
     const deletedUser = await UserModel.findByIdAndUpdate(req.params.id, {
       isDeleted: true,
-    }).lean();
+    })
+      .select(properties)
+      .lean();
 
     if (!deletedUser) {
       return res.status(404).json(
@@ -124,10 +128,12 @@ const deleteUser = async (req, res, next) => {
 
 const authenticate = async (req, res, next) => {
   try {
-    const { userName, password } = await authenticateUser.validateAsync(req.body);
+    const { userName, password } = await authenticateUser.validateAsync(
+      req.body,
+    );
 
     const user = await UserModel.findOne({
-      userName
+      userName,
     })
       .select(`password _id`)
       .lean();
@@ -154,7 +160,7 @@ const authenticate = async (req, res, next) => {
     }
     const token = jwt.sign(
       { userId: user._id, password: user.password },
-      config.security.SECRET_KEY,
+      config.SECURITY.SECRET_KEY,
       // { expiresIn: '30s' }
     );
 

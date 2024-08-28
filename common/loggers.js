@@ -35,14 +35,14 @@ const logger = winston.createLogger({
   format: logFormat,
   transports: [
     new DailyRotateFile({
-      filename: path.join(config.logsPath, "errors-%DATE%.log"),
+      filename: path.join(config.LOGS_PATH, "errors-%DATE%.log"),
       level: "error", // Only log error level messages to errors-%DATE%.log
       datePattern: "YYYY-MM-DD",
       maxFiles: null,
       format: logFormat,
     }),
     new DailyRotateFile({
-      filename: path.join(config.logsPath, "output-%DATE%.log"),
+      filename: path.join(config.LOGS_PATH, "output-%DATE%.log"),
       level: "info", // Log info and above (including errors) to output-%DATE%.log
       datePattern: "YYYY-MM-DD",
       maxFiles: null,

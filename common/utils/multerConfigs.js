@@ -5,7 +5,7 @@ const config = require("../config");
 // Set up storage with Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, config.images.originalPath);
+    cb(null, config.IMAGES.ORIGINAL_PATH);
   },
   filename: (req, file, cb) => {
     // Generate a unique filename based on the original name and a timestamp
@@ -31,6 +31,10 @@ const fileFilter = (req, file, cb) => {
 
 // Create Multer instance with storage and file filter
 //allow to max file size 25MB - It will compress
-const upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fieldSize: 25 * 1024 * 1024 } });
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fieldSize: 25 * 1024 * 1024 },
+});
 
 module.exports = upload;
