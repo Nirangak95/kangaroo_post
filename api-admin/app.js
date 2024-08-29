@@ -29,5 +29,5 @@ require("./routes/index")(app);
 app.use(middlewares.notFoundHandler);
 app.use(middlewares.errorHandler);
 
-//Init Mongo,listen App
+//Init Mongo,Redis &  listen App
 require("./init/index")(app);
