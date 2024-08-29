@@ -1,5 +1,5 @@
 const joi = require("joi");
-const { Status } = require("../constants");
+const { status } = require("../constants");
 
 const createRateCard = joi.object().keys({
   vehicularType: joi.string().trim(true).required(),
@@ -16,7 +16,7 @@ const createRateCard = joi.object().keys({
   status: joi
     .string()
     .trim()
-    .allow(Status.ENABLED, Status.DISABLED)
+    .allow(status.ENABLED, status.DISABLED)
     .only()
     .required(),
   maxDimensions: joi
@@ -45,7 +45,7 @@ const updateRateCard = joi.object().keys({
       minWeight: joi.number(),
     }),
   ),
-  status: joi.string().trim().allow(Status.ENABLED, Status.DISABLED).only(),
+  status: joi.string().trim().allow(status.ENABLED, status.DISABLED).only(),
 });
 
 module.exports = { createRateCard, getRateCard, updateRateCard };

@@ -2,7 +2,7 @@ const modelName = "user";
 const index = require("./index");
 const { hashPassword } = require("../utils/bcrypt");
 
-const { Status, UserRoles } = require("../constants");
+const { status, userRoles } = require("../constants");
 
 const schema = {
   _id: { type: Number, ref: modelName },
@@ -10,14 +10,14 @@ const schema = {
   /** properties */
   userName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, required: true, enum: [UserRoles.ADMIN] },
+  role: { type: String, required: true, enum: [userRoles.ADMIN] },
   firebaseID: { type: String, default: null },
   email: { type: String, default: null },
   contactNumber: { type: String, default: null },
   status: {
     type: String,
-    enum: [Status.ENABLED, Status.DISABLED],
-    default: Status.ENABLED,
+    enum: [status.ENABLED, status.DISABLED],
+    default: status.ENABLED,
   },
   passwordResetCode: { type: Number, default: null },
   passwordResetCodeExpire: { type: Number },

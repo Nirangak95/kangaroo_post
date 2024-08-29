@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./api-admin/app.js",
+    "customer": "nodemon ./api-customer/app.js",
+    "admin": "nodemon ./api-admin/app.js",
     "ndb": "ndb ./api-admin/app.js",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start:all": "concurrently \"npm run customer\" \"npm run admin\""
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -27,6 +29,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "prettier": "^3.3.3"
   },
   "keywords": [],

@@ -1,6 +1,6 @@
 const modelName = "package";
 const index = require("./index");
-const { Status } = require("../constants");
+const { status } = require("../constants");
 
 const schema = {
   _id: { type: Number, ref: modelName },
@@ -20,8 +20,8 @@ const schema = {
   waitingRatePerMin: { type: Number, default: 0 },
   status: {
     type: String,
-    enum: [Status.ENABLED, Status.DISABLED],
-    default: Status.ENABLED,
+    enum: [status.ENABLED, status.DISABLED],
+    default: status.ENABLED,
   },
   isDeleted: { type: Boolean, default: false },
   vehicularTypes: {

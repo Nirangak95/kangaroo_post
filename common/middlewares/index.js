@@ -1,7 +1,7 @@
-const errorCodes = require("../../common/errorCodes");
+const errorCodes = require("../errorCodes");
 const jwt = require("jsonwebtoken");
-const config = require("../../common/config");
-let { errorResponse } = require("../../common/helpers");
+const config = require("../config");
+let { errorResponse } = require("../helpers");
 
 const notFoundHandler = (req, res, next) => {
   const errorCode = errorCodes.notFound;

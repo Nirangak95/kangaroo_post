@@ -1,10 +1,9 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 const config = require("../../common/config");
-const logger = require("../../common/loggers");
 const Redis = require("ioredis");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 module.exports = async (app) => {
   try {
@@ -63,7 +62,7 @@ async function initRedis2() {
 async function listenApp(app) {
   app.listen(PORT, () => {
     console.log(
-      `Admin - API init at ${moment().format("YYYY-MM-DD HH:mm")} - PORT ${PORT}`,
+      `Customer - API init at ${moment().format("YYYY-MM-DD HH:mm")} - PORT ${PORT}`,
     );
   });
 }

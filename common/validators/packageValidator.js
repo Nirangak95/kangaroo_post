@@ -1,5 +1,5 @@
 const joi = require("joi");
-const { Status } = require("../constants");
+const { status } = require("../constants");
 
 const createPackage = joi.object().keys({
   name: joi.string().trim().required(),
@@ -7,7 +7,7 @@ const createPackage = joi.object().keys({
   status: joi
     .string()
     .trim()
-    .allow(Status.ENABLED, Status.DISABLED)
+    .allow(status.ENABLED, status.DISABLED)
     .only()
     .required(),
   allowedWeight: joi
@@ -30,7 +30,7 @@ const updatePackage = joi.object().keys({
   id: joi.number().required(),
   type: joi.string().trim(),
   vehicularTypes: joi.array().items(),
-  status: joi.string().trim().allow(Status.ENABLED, Status.DISABLED).only(),
+  status: joi.string().trim().allow(status.ENABLED, status.DISABLED).only(),
   allowedWeight: joi.object({
     min: joi.number().default(null),
     max: joi.number().default(null),

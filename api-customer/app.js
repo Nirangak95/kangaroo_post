@@ -20,7 +20,7 @@ app.use(express.json());
 const middlewares = require("../common/middlewares/index");
 
 //Validate Routes --------
-app.use("/api-admin/", middlewares.tokenValidation);
+// app.use("/api-customer/", middlewares.tokenValidation);
 
 //Routes
 require("./routes/index")(app);

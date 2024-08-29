@@ -7,9 +7,17 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Admin",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/api-admin/app.js",
+      "env": {}
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Customer",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/api-customer/app.js",
       "env": {}
     }
   ]
