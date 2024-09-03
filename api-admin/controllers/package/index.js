@@ -6,7 +6,7 @@ const {
 const PackageModel = require("../../../common/models/package");
 const { notFound } = require("../../../common/errorCodes");
 
-let { successResponse, errorResponse } = require("../../../common/helpers");
+const { successResponse, errorResponse } = require("../../../common/helpers");
 
 const create = async (req, res, next) => {
   try {

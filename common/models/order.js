@@ -1,4 +1,4 @@
-const modelName = "customer";
+const modelName = "order";
 const index = require("./index");
 const {
   orderStatus: os,
