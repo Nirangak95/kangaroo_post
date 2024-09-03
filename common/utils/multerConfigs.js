@@ -5,7 +5,7 @@ const config = require("../config");
 // Set up storage with Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, config.IMAGES.ORIGINAL_PATH);
+    cb(null, config.IMAGES.PRIMARY_PATH);
   },
   filename: (req, file, cb) => {
     // Generate a unique filename based on the original name and a timestamp

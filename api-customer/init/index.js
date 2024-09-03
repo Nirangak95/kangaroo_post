@@ -26,11 +26,7 @@ async function initMongoDB() {
 }
 
 async function initRedis1() {
-  const redis1 = new Redis({
-    port: config.REDIS_PORT_1,
-    host: config.REDIS_DB,
-    password: config.SECURITY.REDIS_PASS,
-  });
+  const redis1 = new Redis(config.REDIS_DB_1);
 
   try {
     const result = await redis1.ping();
@@ -43,11 +39,7 @@ async function initRedis1() {
 }
 
 async function initRedis2() {
-  const redis2 = new Redis({
-    port: config.REDIS_PORT_2,
-    host: config.REDIS_DB,
-    password: config.SECURITY.REDIS_PASS,
-  });
+  const redis2 = new Redis(config.REDIS_DB_2);
 
   try {
     const result = await redis2.ping();
@@ -58,6 +50,8 @@ async function initRedis2() {
     redis2.disconnect();
   }
 }
+
+
 
 async function listenApp(app) {
   app.listen(PORT, () => {

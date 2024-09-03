@@ -1,8 +1,8 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 const config = require("../../common/config");
-const logger = require("../../common/loggers");
 const Redis = require("ioredis");
+const fs = require("fs");
 
 const PORT = process.env.PORT || 3000;
 
@@ -11,6 +11,7 @@ module.exports = async (app) => {
     await initMongoDB();
     await initRedis1();
     await initRedis2();
+    await createPaths();
     await listenApp(app);
   } catch (error) {
     console.log(error);
@@ -27,11 +28,7 @@ async function initMongoDB() {
 }
 
 async function initRedis1() {
-  const redis1 = new Redis({
-    port: config.REDIS_PORT_1,
-    host: config.REDIS_DB,
-    password: config.SECURITY.REDIS_PASS,
-  });
+  const redis1 = new Redis(config.REDIS_DB_1);
 
   try {
     const result = await redis1.ping();
@@ -44,11 +41,7 @@ async function initRedis1() {
 }
 
 async function initRedis2() {
-  const redis2 = new Redis({
-    port: config.REDIS_PORT_2,
-    host: config.REDIS_DB,
-    password: config.SECURITY.REDIS_PASS,
-  });
+  const redis2 = new Redis(config.REDIS_DB_2);
 
   try {
     const result = await redis2.ping();
@@ -57,6 +50,25 @@ async function initRedis2() {
     console.error("Redis 2 (6378) Connection Error:", err);
   } finally {
     redis2.disconnect();
+  }
+}
+
+async function createPaths() {
+  try {
+    const paths = [
+      config.IMAGES.PRIMARY_PATH,
+      config.IMAGES.RESIZED_PATH,
+      `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`,
+      `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`,
+    ];
+
+    paths.forEach((path) => {
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, { recursive: true });
+      }
+    });
+  } catch (err) {
+    console.error("File paths creating error:", err);
   }
 }
 

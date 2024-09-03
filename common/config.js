@@ -2,13 +2,12 @@ const config = {
   //Databases
   MONGO_DB: process.env.MONGO_DB,
 
-  REDIS_DB: process.env.REDIS_DB,
-  REDIS_PORT_1: parseInt(process.env.REDIS_PORT_1),
-  REDIS_PORT_2: parseInt(process.env.REDIS_PORT_2),
+  REDIS_DB_1: process.env.REDIS_DB_1,
+  REDIS_DB_2: process.env.REDIS_DB_2,
 
   LOGS_PATH: process.env.LOGS_PATH,
   IMAGES: {
-    ORIGINAL_PATH: process.env.ORIGINAL_PATH,
+    PRIMARY_PATH: process.env.PRIMARY_PATH,
     RESIZED_PATH: process.env.RESIZED_PATH,
 
     //RateCard
@@ -22,9 +21,6 @@ const config = {
 
     //Not Applied
     EXPIRES_IN: process.env.EXPIRES_IN,
-
-    //Redis
-    REDIS_PASS: process.env.REDIS_PASS,
   },
 };
 

@@ -23,7 +23,7 @@ const create = async (req, res, next) => {
 
     //Map Icon Resize & Save
     if (inputFiles.mapIconUrl) {
-      const originalPath = `${config.IMAGES.ORIGINAL_PATH}${inputFiles.mapIconUrl[0].filename}`;
+      const originalPath = `${config.IMAGES.PRIMARY_PATH}${inputFiles.mapIconUrl[0].filename}`;
       const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}${inputFiles.mapIconUrl[0].filename}`;
       await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
       validatedInput.mapIconUrl = resizedPath;
@@ -31,7 +31,7 @@ const create = async (req, res, next) => {
 
     //Rate Card Resize & Save
     if (inputFiles.imageUrl) {
-      const originalPath = `${config.IMAGES.ORIGINAL_PATH}${inputFiles.imageUrl[0].filename}`;
+      const originalPath = `${config.IMAGES.PRIMARY_PATH}${inputFiles.imageUrl[0].filename}`;
       const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}${inputFiles.imageUrl[0].filename}`;
       await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
       validatedInput.imageUrl = resizedPath;
