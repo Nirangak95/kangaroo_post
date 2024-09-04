@@ -19,9 +19,8 @@ module.exports = async (app) => {
 async function initMongoDB() {
   try {
     //wait for the connection ready
-    await mongoose.connect(config.MONGO_DB, {});
+    await mongoose.createConnection(config.MONGO_DB, {});
     console.log("MongoDB connected");
-
 
   } catch (err) {
     console.log("MongoDB connection error:", err);
