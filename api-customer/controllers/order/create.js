@@ -6,8 +6,7 @@ const CustomerModel = require("../../../common/models/customer");
 
 const { createOrder } = require("../../../common/validators/orderValidator");
 const { setRedisKey } = require("../../../common/helpers/redis");
-const { redis } = require("../../../common/constants")
-
+const { redis } = require("../../../common/constants");
 
 const moment = require("moment");
 
@@ -44,12 +43,12 @@ module.exports = async (req, res, next) => {
     const savedOrder = await OrderModel(input).save();
 
     //4. Redis DB save
-    const key = '22j2'
-    const value = {
-      test: "pppp",
-      hello: "esj"
-    };
-    await setRedisKey(redis.ONE, key, value)
+    // const key = '22j2'
+    // const value = {
+    //   test: "pppp",
+    //   hello: "esj"
+    // };
+    // await setRedisKey(redis.ONE, key, value)
 
     res.status(201).json(successResponse({ data: savedOrder }));
   } catch (error) {

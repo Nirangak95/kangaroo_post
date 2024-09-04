@@ -60,5 +60,5 @@ module.exports = {
   userType,
   orderBy,
   orderType,
-  redis
+  redis,
 };

@@ -1,10 +1,10 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 const config = require("../../common/config");
-const Redis = require("ioredis");
 const fs = require("fs");
 
 const PORT = process.env.PORT || 3000;
+const { redis1, redis2 } = require("../../common/clients");
 
 module.exports = async (app) => {
   try {
@@ -28,8 +28,6 @@ async function initMongoDB() {
 }
 
 async function initRedis1() {
-  const redis1 = new Redis(config.REDIS_DB_1);
-
   try {
     const result = await redis1.ping();
     console.log("Redis 1 (6379) Connected:", result);
@@ -41,8 +39,6 @@ async function initRedis1() {
 }
 
 async function initRedis2() {
-  const redis2 = new Redis(config.REDIS_DB_2);
-
   try {
     const result = await redis2.ping();
     console.log("Redis 2 (6378) Connected:", result);
