@@ -5,10 +5,16 @@ const OrderModel = require("../../../common/models/order");
 const CustomerModel = require("../../../common/models/customer");
 
 const { createOrder } = require("../../../common/validators/orderValidator");
+const { setRedisKey } = require("../../../common/helpers/redis");
+const { redis } = require("../../../common/constants")
+
+
+const moment = require("moment");
 
 //1. validate customer
 //2. validate package
 //3. save order
+//4. Redis DB save
 
 module.exports = async (req, res, next) => {
   try {
@@ -32,8 +38,18 @@ module.exports = async (req, res, next) => {
         .json(errorResponse({ message: "Package not found" }));
     }
 
+    input.time = { requested: moment().utc().toISOString() };
+
     //3. save order
     const savedOrder = await OrderModel(input).save();
+
+    //4. Redis DB save
+    const key = '22j2'
+    const value = {
+      test: "pppp",
+      hello: "esj"
+    };
+    await setRedisKey(redis.ONE, key, value)
 
     res.status(201).json(successResponse({ data: savedOrder }));
   } catch (error) {

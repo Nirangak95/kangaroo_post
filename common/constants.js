@@ -41,6 +41,11 @@ const orderBy = {
   APP: "app",
 };
 
+const redis = {
+  ONE: 1,
+  TWO: 2,
+};
+
 const orderType = {
   SEND: "send",
   RECEIVE: "receive",
@@ -55,4 +60,5 @@ module.exports = {
   userType,
   orderBy,
   orderType,
+  redis
 };

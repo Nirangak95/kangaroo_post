@@ -83,11 +83,11 @@ const schema = {
   },
   time: {
     requested: { type: Date, required: true },
-    accepted: { type: Date, required: true },
-    picked: { type: Date, required: true },
-    delivered: { type: Date, required: true },
-    paid: { type: Date, required: true },
-    total: { type: Date, required: true },
+    accepted: { type: Date, },
+    picked: { type: Date, },
+    delivered: { type: Date, },
+    paid: { type: Date, },
+    total: { type: Date, },
   },
   otp: {
     code: { type: Number },
