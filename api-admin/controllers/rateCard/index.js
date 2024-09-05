@@ -8,7 +8,7 @@ const { notFound } = require("../../../common/errorCodes");
 const sharp = require("sharp");
 const config = require("../../../common/config");
 
-const { successResponse, errorResponse } = require("../../../common/helpers");
+const { successResponse, errorResponse } = require("../../../common/helpers/other");
 
 const create = async (req, res, next) => {
   try {

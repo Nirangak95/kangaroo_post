@@ -1,4 +1,4 @@
-const { successResponse, errorResponse } = require("../../../common/helpers");
+const { successResponse, errorResponse } = require("../../../common/helpers/other");
 
 const PackageModel = require("../../../common/models/package");
 const OrderModel = require("../../../common/models/order");
