@@ -30,8 +30,6 @@ async function connectRedis1() {
     console.log("Redis 1 (6379) Connected:", result);
   } catch (err) {
     console.error("Redis 1 (6379) Connection Error:", err);
-  } finally {
-    redis1.disconnect();
   }
 }
 
@@ -41,9 +39,7 @@ async function connectRedis2() {
     console.log("Redis 2 (6378) Connected:", result);
   } catch (err) {
     console.error("Redis 2 (6378) Connection Error:", err);
-  } finally {
-    redis2.disconnect();
   }
 }
 
-module.exports = { connectRedis1, connectRedis2, connectMongo };
+module.exports = { connectRedis1, connectRedis2, connectMongo, redis1, redis2 };

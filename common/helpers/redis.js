@@ -2,14 +2,12 @@ const config = require("../config");
 const { redis } = require("../constants");
 const { redis1, redis2 } = require("../../common/clients");
 
-const setRedisKey = async (db, key, value) => {
-  let serializedValue = JSON.stringify(value);
-
+const setRedisHMSet = async (db, key, value) => {
   if (db == redis.ONE) {
-    await redis1.set(key, serializedValue);
+    await redis1.hmset(key, value);
   } else {
-    await redis2.set(key, serializedValue);
+    await redis2.hmset(key, value);
   }
 };
 
-module.exports = { setRedisKey };
+module.exports = { setRedisHMSet };

@@ -2,32 +2,52 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
+const init = require("../common/clients");
+const { createPaths } = require("../common/helpers/other");
+const moment = require("moment");
+const PORT = process.env.PORT || 3000;
+const config = require("../common/config");
 
-//Enable Cors
-const corsOptions = {
-  origin: "*",
-  methods: "GET,PUT,POST,DELETE,OPTIONS",
-  allowedHeaders:
-    "Content-Type, Authorization, Content-Length, X-Requested-With, x-access-token, x-access-id",
-};
+(async () => {
+  //Init Mongo,Redis 1, Redis 2 & path Creation
+  await init.connectMongo();
+  await init.connectRedis1();
+  await init.connectRedis2();
+  await createPaths([
+    `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`,
+    `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`,
+  ]);
 
-app.use(cors(corsOptions));
+  //Enable Cors
+  const corsOptions = {
+    origin: "*",
+    methods: "GET,PUT,POST,DELETE,OPTIONS",
+    allowedHeaders:
+      "Content-Type, Authorization, Content-Length, X-Requested-With, x-access-token, x-access-id",
+  };
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+  app.use(cors(corsOptions));
 
-//Middle wares
-const middlewares = require("../common/middlewares/index");
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
-//Validate Routes --------
-app.use("/api-admin/", middlewares.tokenValidation);
+  //Middle wares
+  const middlewares = require("../common/middlewares/index");
 
-//Routes
-require("./routes/index")(app);
+  //Validate Routes --------
+  app.use("/api-admin/", middlewares.tokenValidation);
 
-//Common Middlewares
-app.use(middlewares.notFoundHandler);
-app.use(middlewares.errorHandler);
+  //Routes
+  require("./routes/index")(app);
 
-//Init Mongo,Redis &  listen App
-require("./init/index")(app);
+  //Common Middlewares
+  app.use(middlewares.notFoundHandler);
+  app.use(middlewares.errorHandler);
+
+  //listen App
+  app.listen(PORT, () => {
+    console.log(
+      `Admin - API init at ${moment().format("YYYY-MM-DD HH:mm")} - PORT ${PORT}`,
+    );
+  });
+})();

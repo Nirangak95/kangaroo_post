@@ -20,18 +20,14 @@ const createOrder = joi.object().keys({
   deliveryAddress: joi.string().required(),
   pickupAddress: joi.string().required(),
   location: {
-    initialPickup: joi
-      .object({
-        lat: joi.number(),
-        lng: joi.number(),
-      })
-      .required(),
-    initialDelivery: joi
-      .object({
-        lat: joi.number(),
-        lng: joi.number(),
-      })
-      .required(),
+    initialPickup: joi.object({
+      lat: joi.number().required(),
+      lng: joi.number().required(),
+    }),
+    initialDelivery: joi.object({
+      lat: joi.number().required(),
+      lng: joi.number().required(),
+    }),
   },
   paymentMethod: joi
     .string()
