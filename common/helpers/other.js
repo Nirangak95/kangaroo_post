@@ -38,5 +38,4 @@ const errorResponse = ({ message = null, data = null, errorCode = null }) => ({
   data,
 });
 
-
 module.exports = { createPaths, successResponse, errorResponse };

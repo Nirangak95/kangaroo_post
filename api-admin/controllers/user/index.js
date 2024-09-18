@@ -14,7 +14,10 @@ const config = require("../../../common/config");
 
 const jwt = require("jsonwebtoken");
 
-const { successResponse, errorResponse } = require("../../../common/helpers/other");
+const {
+  successResponse,
+  errorResponse,
+} = require("../../../common/helpers/other");
 
 const properties =
   "userName role email contactNumber status isLogged createdAt isDeleted";

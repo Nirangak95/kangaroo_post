@@ -14,7 +14,7 @@ const connectMongo = async () => {
   }
 
   try {
-    const db = mongoose.connect(config.MONGO_DB, {});
+    const db = await mongoose.connect(config.MONGO_DB, { maxPoolSize: 1000 });
     cachedDb = db;
     console.log("MongoDB connected");
     return db;

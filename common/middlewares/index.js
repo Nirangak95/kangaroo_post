@@ -1,7 +1,7 @@
 const errorCodes = require("../errorCodes");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
-let { errorResponse } = require("../helpers");
+let { errorResponse } = require("../helpers/other");
 
 const notFoundHandler = (req, res, next) => {
   const errorCode = errorCodes.notFound;

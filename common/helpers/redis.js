@@ -10,4 +10,7 @@ const setRedisHMSet = async (db, key, value) => {
   }
 };
 
-module.exports = { setRedisHMSet };
+const bookingKey = async ({ orderId = "*", status = "*", serviceType = "*" }) =>
+  `order:${orderId}:${status}:${serviceType}`;
+
+module.exports = { setRedisHMSet, bookingKey };

@@ -13,27 +13,32 @@ function getAutoIncrement() {
 const autoIncrement = getAutoIncrement();
 
 // For avoiding getting deleted result
-const softDeletePlugin = (schema) => {
-  schema.pre("find", function () {
-    this.where({ isDeleted: false });
-  });
+// const softDeletePlugin = (schema) => {
+//   schema.pre("find", function () {
+//     this.where({ isDeleted: false });
+//   });
 
-  schema.pre("findOne", function () {
-    this.where({ isDeleted: false });
-  });
+//   schema.pre("findOne", function () {
+//     this.where({ isDeleted: false });
+//   });
 
-  schema.pre("findOneAndUpdate", function () {
-    this.where({ isDeleted: false });
-  });
+//   schema.pre("findOneAndUpdate", function () {
+//     this.where({
+//       $or: [
+//         { isDeleted: { $exists: false } },
+//         { isDeleted: false }
+//       ]
+//     });
+//   });
 
-  schema.pre("countDocuments", function () {
-    this.where({ isDeleted: false });
-  });
+//   schema.pre("countDocuments", function () {
+//     this.where({ isDeleted: false });
+//   });
 
-  schema.pre("aggregate", function () {
-    this.pipeline().unshift({ $match: { isDeleted: false } });
-  });
-};
+//   schema.pre("aggregate", function () {
+//     this.pipeline().unshift({ $match: { isDeleted: false } });
+//   });
+// };
 
 function setModel(schema, modelName) {
   let model;
@@ -52,7 +57,7 @@ function setPlugins(schema, modelName) {
     message: "Error, expected {PATH} to be unique.",
   });
 
-  schema.plugin(softDeletePlugin);
+  // schema.plugin(softDeletePlugin);
 }
 
 function createSchema(schemaDefinition, modelName) {
