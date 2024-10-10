@@ -24,10 +24,10 @@ module.exports = async (req, res, next) => {
     //Validate inputs
     const input = await createOrder.validateAsync(req.body);
 
-    //1. validate customer
-    const customer = await CustomerModel.findOne({ _id: input.customerId })
-      .lean()
-      .select("_id ");
+    const [customer, package] = await Promise.all([
+      validateCustomer(input.customerId),
+      validatePackage(input.packageId),
+    ]);
 
     if (!customer) {
       return res
@@ -35,14 +35,7 @@ module.exports = async (req, res, next) => {
         .json(
           errorResponse({ message: "Customer not found", errorCode: notFound }),
         );
-    }
-
-    //2. validate package
-    const packageDetails = await PackageModel.findById(input.packageId)
-      .select("_id")
-      .lean();
-
-    if (!packageDetails) {
+    } else if (!package) {
       return res
         .status(404)
         .json(
@@ -72,3 +65,19 @@ module.exports = async (req, res, next) => {
     next(error);
   }
 };
+
+async function validateCustomer(customerId) {
+  const customer = await CustomerModel.findOne({ _id: customerId })
+    .lean()
+    .select("_id ");
+
+  return customer ? customer : null;
+}
+
+async function validatePackage(packageId) {
+  const packageDetails = await PackageModel.findById(packageId)
+    .select("_id")
+    .lean();
+
+  return packageDetails ? packageDetails : null;
+}

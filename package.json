@@ -6,14 +6,15 @@
   "scripts": {
     "customer": "nodemon ./api-customer/app.js",
     "admin": "nodemon ./api-admin/app.js",
-    "ndb": "ndb ./api-admin/app.js",
     "format": "prettier --write .",
     "start:all": "concurrently \"npm run customer\" \"npm run admin\""
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "concurrently": "^9.0.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
@@ -29,7 +30,6 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
     "prettier": "^3.3.3"
   },
   "keywords": [],
