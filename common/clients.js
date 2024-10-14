@@ -3,20 +3,23 @@ const mongoose = require("mongoose");
 
 const config = require("../common/config");
 
-let cachedDb = null;
+let mongoConnection = null;
 let redis1 = null;
 let redis2 = null;
 
 const connectMongo = async () => {
-  if (cachedDb) {
-    return cachedDb;
+  if (mongoConnection) {
+    return mongoConnection;
   }
 
   try {
-    const db = await mongoose.connect(config.MONGO_DB, { maxPoolSize: 100 });
-    cachedDb = db;
+
+    await mongoose.connect(config.MONGO_DB, {
+      maxPoolSize: 100
+    });
     console.log("MongoDB connected");
-    return db;
+
+    return mongoose.connection;
   } catch (error) {
     console.error("MongoDB connection error:", error);
     return error;

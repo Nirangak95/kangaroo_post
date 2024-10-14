@@ -69,7 +69,12 @@ function createSchema(schemaDefinition, modelName) {
   return schema;
 }
 
+function models(prefix) {
+  return require(`./${prefix}`);
+};
+
 module.exports = {
   setModel,
   createSchema,
+  models
 };
