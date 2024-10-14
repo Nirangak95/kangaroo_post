@@ -16,7 +16,7 @@ const {
 const create = async (req, res, next) => {
   try {
     const inputFiles = req.files;
-    //Convert JSON sting to parse
+    //Convert JSON string to parse
     req.body.vehicularModel &&
       (req.body.vehicularModel = JSON.parse(req.body.vehicularModel));
     req.body.maxDimensions &&

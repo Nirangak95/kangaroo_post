@@ -57,6 +57,8 @@ module.exports = async (req, res, next) => {
 
     const value = {
       requested: savedOrder.time.requested,
+      initialPickupLat: savedOrder.location?.initialPickup?.lat,
+      initialPickupLng: savedOrder.location?.initialPickup?.lng,
     };
     await setRedisHMSet(redis.ONE, key, value);
 

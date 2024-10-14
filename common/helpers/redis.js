@@ -1,12 +1,20 @@
 const config = require("../config");
 const { redis } = require("../constants");
-const { redis1, redis2 } = require("../../common/clients");
+const { connectRedis1, connectRedis2 } = require("../../common/clients");
 
 const setRedisHMSet = async (db, key, value) => {
-  if (db == redis.ONE) {
-    await redis1.hmset(key, value);
+  let redisClient = null;
+
+  if (db === redis.ONE) {
+    redisClient = await connectRedis1();
   } else {
-    await redis2.hmset(key, value);
+    redisClient = await connectRedis2();
+  }
+
+  if (redisClient) {
+    await redisClient.hmset(key, value);
+  } else {
+    throw new Error('Redis client is not initialized');
   }
 };
 

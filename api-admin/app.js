@@ -10,11 +10,14 @@ const config = require("../common/config");
 
 (async () => {
   try {
-    //Init Mongo,Redis 1, Redis 2 & path Creation
-    await init.connectMongo();
+    //Init Mongo,Redis 1, Redis 
+    await Promise.all([init.connectMongo(), init.connectRedis1(), init.connectRedis2()]);
 
-    await init.connectRedis1();
-    await init.connectRedis2();
+    const modelIndex = require("../common/models/index");
+    modelIndex.models('package');
+    modelIndex.models('rateCard');
+    modelIndex.models('user');
+
     await createPaths([
       `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`,
       `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`,

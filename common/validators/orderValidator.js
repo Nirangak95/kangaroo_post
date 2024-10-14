@@ -19,27 +19,27 @@ const createOrder = joi.object().keys({
   orderBy: joi.string().allow(ob.WEB, ob.APP).only(),
   deliveryAddress: joi.string().required(),
   pickupAddress: joi.string().required(),
-  location: {
+  location: joi.object().keys({
     initialPickup: joi.object({
       lat: joi.number().required(),
       lng: joi.number().required(),
-    }),
+    }).required(),
     initialDelivery: joi.object({
-      lat: joi.number().required(),
-      lng: joi.number().required(),
+      lat: joi.number(),
+      lng: joi.number(),
     }),
-  },
+  }).required(),
   paymentMethod: joi
     .string()
     .allow(pm.CASH, pm.CORPORATE, pm.CREDIT_CARD)
     .only()
     .required(),
   orderType: joi.string().allow(ot.SEND, ot.RECEIVE).only().required(),
-  receiver: {
+  receiver: joi.object().keys({
     firstName: joi.string().required(),
     lastName: joi.string().required(),
     contactNo: joi.string().required(),
-  },
+  }).required(),
   userType: joi
     .string()
     .allow(ut.PERSONAL, ut.MERCHANT, ut.CORPORATE)

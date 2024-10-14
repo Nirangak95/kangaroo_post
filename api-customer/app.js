@@ -4,21 +4,18 @@ const app = express();
 require("dotenv").config();
 const init = require("../common/clients");
 const moment = require("moment");
-const modelIndex = require("../common/models/index");
-
 const PORT = process.env.PORT || 3001;
 
 (async () => {
   try {
     //Init Mongo,Redis 1 & Redis 2
-    await init.connectMongo()
-      .then(() => {
-        modelIndex.models('package');
-        modelIndex.models('order');
-        modelIndex.models('customer');
-      });
-    await init.connectRedis1();
-    await init.connectRedis2();
+    await Promise.all([init.connectMongo(), init.connectRedis1(), init.connectRedis2()]);
+
+    const modelIndex = require("../common/models/index");
+    modelIndex.models('package');
+    modelIndex.models('order');
+    modelIndex.models('customer');
+
 
     //Enable Cors
     const corsOptions = {

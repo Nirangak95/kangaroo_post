@@ -52,4 +52,4 @@ const connectRedis2 = async () => {
   return redis2;
 };
 
-module.exports = { connectRedis1, connectRedis2, connectMongo, redis1, redis2 };
+module.exports = { connectRedis1, connectRedis2, connectMongo };
