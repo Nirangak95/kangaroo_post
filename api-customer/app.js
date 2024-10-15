@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-require("dotenv").config();
+
+//Load environment variables according to the environment
+require('../common/configLoader')();
+
 const init = require("../common/clients");
 const moment = require("moment");
 const PORT = process.env.PORT || 3001;

@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-require("dotenv").config();
+
+//Load environment variables according to the environment
+require('../common/configLoader')();
+
 const init = require("../common/clients");
-const { createPaths } = require("../common/helpers/other");
+// const { createPaths } = require("../common/helpers/other");
 const moment = require("moment");
 const PORT = process.env.PORT || 3000;
 const config = require("../common/config");
@@ -18,10 +21,10 @@ const config = require("../common/config");
     modelIndex.models('rateCard');
     modelIndex.models('user');
 
-    await createPaths([
-      `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`,
-      `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`,
-    ]);
+    // await createPaths([
+    //   `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`,
+    //   `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`,
+    // ]);
 
     //Enable Cors
     const corsOptions = {

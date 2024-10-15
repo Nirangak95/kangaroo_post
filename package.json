@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "customer": "nodemon ./api-customer/app.js",
-    "admin": "nodemon ./api-admin/app.js",
+    "customer": "cross-env NODE_ENV=test nodemon ./api-customer/app.js",
+    "admin": "cross-env NODE_ENV=test nodemon ./api-admin/app.js",
     "format": "prettier --write .",
     "start:all": "concurrently \"npm run customer\" \"npm run admin\""
   },

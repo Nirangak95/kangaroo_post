@@ -1,16 +1,9 @@
 const config = require("../config");
 const fs = require("fs");
 
-async function createPaths(paths) {
+async function folderPathCheck(paths) {
   try {
-    const primaryPath = [
-      config.IMAGES.PRIMARY_PATH,
-      config.IMAGES.RESIZED_PATH,
-    ];
-
-    const updatedPaths = primaryPath.concat(paths);
-
-    updatedPaths.forEach((path) => {
+    paths.forEach((path) => {
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
       }
@@ -38,4 +31,4 @@ const errorResponse = ({ message = null, data = null, errorCode = null }) => ({
   data,
 });
 
-module.exports = { createPaths, successResponse, errorResponse };
+module.exports = { folderPathCheck, successResponse, errorResponse };

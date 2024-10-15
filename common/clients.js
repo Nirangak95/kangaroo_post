@@ -13,7 +13,6 @@ const connectMongo = async () => {
   }
 
   try {
-
     await mongoose.connect(config.MONGO_DB, {
       maxPoolSize: 100
     });
