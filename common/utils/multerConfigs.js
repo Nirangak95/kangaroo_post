@@ -1,6 +1,5 @@
 const multer = require("multer");
 const path = require("path");
-const { folderPathCheck } = require("../../common/helpers/other");
 
 const storage = multer.memoryStorage();
 
@@ -20,7 +19,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fieldSize: 25 * 1024 * 1024 }, // Allow max file size of 25MB
+  limits: { fileSize: 25 * 1024 * 1024 }, // Allow max file size of 25MB
 });
 
 module.exports = upload;
