@@ -7,10 +7,13 @@ const RateCardModel = require("../../../common/models/rateCard");
 const { notFound } = require("../../../common/errorCodes");
 const sharp = require("sharp");
 const config = require("../../../common/config");
+const path = require("path");
+const fs = require("fs");
 
 const {
   successResponse,
   errorResponse,
+  folderPathCheck,
 } = require("../../../common/helpers/other");
 
 const create = async (req, res, next) => {
@@ -24,20 +27,39 @@ const create = async (req, res, next) => {
 
     const validatedInput = await createRateCard.validateAsync(req.body);
 
+    //Folder Path checks
+    //For Map Icons
+    const mapIconPath = `${config.IMAGES.PRIMARY_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`;
+    const mapIconResizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}`;
+
+    //For images
+    const imagePath = `${config.IMAGES.PRIMARY_PATH}${config.IMAGES.RATE_CARD_IMAGES}`;
+    const imageResizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}`;
+
+    await folderPathCheck([mapIconPath, mapIconResizedPath, imagePath, imageResizedPath]);
+
     //Map Icon Resize & Save
     if (inputFiles.mapIconUrl) {
-      const originalPath = `${config.IMAGES.PRIMARY_PATH}${inputFiles.mapIconUrl[0].filename}`;
-      const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_MAP_ICONS}${inputFiles.mapIconUrl[0].filename}`;
-      await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
-      validatedInput.mapIconUrl = resizedPath;
+
+      const mapIconFile = inputFiles.mapIconUrl[0];
+      const fileName = path.join(Date.now() + path.extname(mapIconFile.originalname));
+      const mapIconFilePath = path.join(mapIconPath, fileName);
+      const mapIconFileResizedPath = path.join(mapIconResizedPath, fileName);
+
+      fs.writeFileSync(mapIconFilePath, mapIconFile.buffer);
+      await sharp(mapIconFilePath).jpeg({ quality: 40 }).toFile(mapIconFileResizedPath);
     }
 
-    //Rate Card Resize & Save
+    //Rate Card Image Resize & Save
     if (inputFiles.imageUrl) {
-      const originalPath = `${config.IMAGES.PRIMARY_PATH}${inputFiles.imageUrl[0].filename}`;
-      const resizedPath = `${config.IMAGES.RESIZED_PATH}${config.IMAGES.RATE_CARD_IMAGES}${inputFiles.imageUrl[0].filename}`;
-      await sharp(originalPath).jpeg({ quality: 40 }).toFile(resizedPath);
-      validatedInput.imageUrl = resizedPath;
+
+      const imageFile = inputFiles.imageUrl[0];
+      const fileName = path.join(Date.now() + path.extname(imageFile.originalname));
+      const imageFilePath = path.join(imagePath, fileName);
+      const imageFileResizedPath = path.join(imageResizedPath, fileName);
+
+      fs.writeFileSync(imageFilePath, imageFile.buffer);
+      await sharp(imageFilePath).jpeg({ quality: 40 }).toFile(imageFileResizedPath);
     }
 
     const savedRateCard = await RateCardModel(validatedInput).save();

@@ -1,25 +1,13 @@
 const multer = require("multer");
 const path = require("path");
-const config = require("../config");
+const { folderPathCheck } = require("../../common/helpers/other");
 
-// Set up storage with Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, config.IMAGES.PRIMARY_PATH);
-  },
-  filename: (req, file, cb) => {
-    // Generate a unique filename based on the original name and a timestamp
-    const uniqueSuffix = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueSuffix);
-  },
-});
+const storage = multer.memoryStorage();
 
 // Filter to accept only images
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif/;
-  const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase(),
-  );
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
 
   if (mimetype && extname) {
@@ -29,12 +17,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Create Multer instance with storage and file filter
-//allow to max file size 25MB - It will compress
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fieldSize: 25 * 1024 * 1024 },
+  limits: { fieldSize: 25 * 1024 * 1024 }, // Allow max file size of 25MB
 });
 
 module.exports = upload;
