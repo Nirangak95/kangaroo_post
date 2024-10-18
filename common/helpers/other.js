@@ -31,4 +31,11 @@ const errorResponse = ({ message = null, data = null, errorCode = null }) => ({
   data,
 });
 
-module.exports = { folderPathCheck, successResponse, errorResponse };
+function createClientError(message, errorCode) {
+  const error = new Error(message);
+  error.isClientError = true;
+  error.errorCode = errorCode;
+  return error;
+}
+
+module.exports = { folderPathCheck, successResponse, errorResponse, createClientError };
